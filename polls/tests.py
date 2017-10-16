@@ -70,7 +70,7 @@ class QuestionModelTests(TestCase):
         response = self.client.get(reverse('polls:index'))
         self.assertQuerysetEqual(
             response.context['latest_question_list'],
-            ['<Question: Past question 2.>', '<Question: Past question 1.']
+            ['<Question: Past question 2.>', '<Question: Past question 1.>']
         )
 
 
