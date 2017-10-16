@@ -13,11 +13,11 @@ def indexView(generic.ListView):
     def get_queryset(self):
         """Return the last five published questions."""
         return Question.ojects.order_by('-pub_date')[:5]
-    
-def detail(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    return render(request, 'polls/detail.html', {'question': question})
 
+def detail(generic.DetailView):
+    model = Question
+    template_name = 'polls/detail.html'
+    
 def results(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     return render(request, 'polls/results.html', {'question': question})
