@@ -2,8 +2,9 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.http import Http404
 from django.shortcuts import get_object_or_404
+from django.urls import reverse
 
-from .models import Question
+from .models import Choice, Question
 
 def index(request):
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
@@ -22,4 +23,17 @@ def results(request, question_id):
     return HttpResponse(response % question_id)
 
 def vote(request, question_id):
-    return HttpResponse("You're voting on question %s." % question_id)
+    question = get_object_or_404(Question, pk=question_id)
+    try:
+        selected_choice = question.choice_set.get(pk=requestion.POST['choice'])
+    except (KeyError, Choice.DoesNotExist):
+        # redisplay the question voting form.
+        return render(request, 'polls/detail.html', {
+            'question': question,
+            'error_message': "You didn't select a choice",
+        })
+    else:
+        selected_choice.votes += 1
+        selected_choice.save()
+
+        return HttpResponseRedirect(reverse('pollsLresults', args=(question.id,)))
