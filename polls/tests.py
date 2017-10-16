@@ -18,6 +18,14 @@ def create_question(question_text, days):
     return Question.objects.create(question_text=question_text, pub_date=time)
 
 class QuestionModelTests(TestCase):
+    def test_no_questions(self):
+        """
+        If no questions exist, an appropriate message is displayed
+        """
+        response = self.client.get(reverse('polls:index'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "No polls are available.")
+        self. assertQuerysetEqual(response.context['latest_question_list'], [])
 
     def test_was_published_recently_with_future_question(self):
         """
