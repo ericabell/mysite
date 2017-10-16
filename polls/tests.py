@@ -2,11 +2,20 @@ import datetime
 
 from django.utils import timezone
 from django.test import TestCase
+from django.urls import reverse
 
 from .models import Question
 
 # Create your tests here.
 
+def create_question(question_text, days):
+    """
+    Create a question with the given `question_text` and published
+    the given number of `days` offset to now (negative values for questions
+    published in the past, positive for questions yet to be published).
+    """
+    time = timezone.now() + datetime.timedelta(days=days)
+    return Question.objects.create(question_text=question_text, pub_date=time)
 
 class QuestionModelTests(TestCase):
 
